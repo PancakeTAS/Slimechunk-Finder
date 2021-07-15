@@ -1,6 +1,4 @@
-# from numba import njit, vectorize, int64
 from numba import njit
-# import numpy as np
 import time
 
 @njit
@@ -17,7 +15,7 @@ def save(f: int):
 save(1)
 
 start = time.time()
-r = save(1000000000)
+r = save(666666667)
 end = time.time()
 print(r)
 print(round(end - start, 2))
