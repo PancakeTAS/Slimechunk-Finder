@@ -1,9 +1,9 @@
-all: slimechunks.S
+all: slimechunks.c
 	clang slimechunks.c -o slimechunks -O3
-debug: 
+debug:
 	make all
 	gdb slimechunks
-run: 
+run:
 	make all
 	./slimechunks
 clean:

@@ -23,11 +23,11 @@ int main() {
         uint64_t internalSeed = (rngSeed ^ 0x5DEECE66D) & 0xffffffffffff;
         uint64_t nextBoundInt = ((internalSeed * 0x5DEECE66D + 0xB) & 0xffffffffffff) >> 17;
         seedsFound += (nextBoundInt % 10) == 0 ? 1 : 0;
-        
         seedsCounted++;
     }
     /* Optimizations end (but don't have to) here */
     gettimeofday(&stop, NULL);
+    uint64_t microsTime = (stop.tv_sec - start.tv_sec) * 1000000 + stop.tv_usec - start.tv_usec;
     printf("The Program ran through %lu seeds, and %lu seeds had a slime chunk at X: 420, Z: 69\n", seedsCounted, seedsFound);
-    printf("The program ran for %f seconds.\n", ((stop.tv_sec - start.tv_sec) + (stop.tv_usec - start.tv_usec)) / 1000.0F);
+    printf("The program ran for %lu microseconds or %lu milliseconds.\n", microsTime, microsTime / 1000);
 }
