@@ -3,3 +3,5 @@
 *.img
 
 x64/slimechunks
+
+.vscode/
