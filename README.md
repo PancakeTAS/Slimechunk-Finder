@@ -12,15 +12,17 @@ c/cpp by Pancake
 ## Benchmarking
 
 Benchmarked by Pancake on his only PC.
-#### 1) c/cpp
+#### 1) c/cpp - multithreaded
+12 billion seeds per second (16 threads)
+#### 2) c/cpp
 1 billion seeds per second
-#### 1) rust
+#### 2) rust
 1 billion seeds per second
-#### 3) x86_64 assembly
+#### 4) x86_64 assembly
 600 million seeds per second
-#### 4) aarch64 assembly (raspi 3 kernel)
+#### 5) aarch64 assembly (raspi 3 kernel)
 200 million seeds per second
-#### 5) python 
+#### 6) python 
 100 million seeds per second
 
 ## Contributing
