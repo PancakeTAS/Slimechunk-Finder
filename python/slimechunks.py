@@ -1,6 +1,4 @@
-# from numba import njit, vectorize, int64
 from numba import njit
-# import numpy as np
 import time
 
 @njit
@@ -9,15 +7,13 @@ def seed(worldseed: int, xPosition: int, zPosition: int):
 
 @njit
 def save(f: int):
-    num = 0
     for i in range(f):
-        num += 1 if seed(i, 420, 69) == 0 else 0
-    return num
+        seed(i, 420, 69)
+    return f
 
 save(1)
 
 start = time.time()
 r = save(1000000000)
 end = time.time()
-print(r)
-print(round(end - start, 2))
+print(round(r/round(end - start, 2))), "seeds per second") 
