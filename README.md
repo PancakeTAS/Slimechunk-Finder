@@ -8,6 +8,7 @@ x86_64 by Pancake
 rust by Retro_Dev
 python by BlockOG
 c/cpp by Pancake
+c/cpp multithreaded by Pancake
 
 ## Benchmarking
 
@@ -22,8 +23,10 @@ Benchmarked by Pancake on his only PC.
 600 million seeds per second
 #### 5) aarch64 assembly (raspi 3 kernel)
 200 million seeds per second
-#### 6) python 
-100 million seeds per second
+#### 6) python (c++ accelerated) 
+166 million seeds per second
+#### 6) pure python 
+50.000 seeds per second
 
 ## Contributing
 
