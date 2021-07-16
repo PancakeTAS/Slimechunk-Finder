@@ -1,5 +1,5 @@
 all: slimechunks.c
-	clang slimechunks.c -o slimechunks -O3
+	clang slimechunks.c -o slimechunks -pthread -O3
 debug:
 	make all
 	gdb slimechunks
