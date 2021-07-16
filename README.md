@@ -12,4 +12,4 @@ Benchmarked by Pancake on his PC. Multithreading is allowed.
 > 1) c - 16 billion seeds per second (16 threads)
 > 2) rust - 1 billion seeds per second (1 thread)
 > 3) assembly - 600 million seeds per second (1 thread)
-> 4) python - 2.5 million seeds per second (1 thread)
+> 4) python - 20 million seeds per second (16 threads)
