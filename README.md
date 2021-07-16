@@ -10,7 +10,7 @@ Wanna benchmark yours? PR it and it will be added.
 ### Leaderboard
 Benchmarked by Pancake on his PC. Multithreading is allowed.
 #### Note: The current values are temporary, and will be updated from a different PC!
-> 1) c - 6 billion seeds per second (16 threads)
+> 1) c - 8 billion seeds per second (16 threads)
 > 2) rust - 600 million seeds per second (1 thread)
 > 3) x86_64 assembly - 120 million per second (1 thread)
 > 4) aarch64 assembly - 105 million seeds per second (1 thread - qemu)

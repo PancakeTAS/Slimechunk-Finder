@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdint.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <pthread.h>
 #include <sys/time.h>
 
@@ -24,13 +25,17 @@ void *runSeedfinder(void *args) {
     seedsRequested += seedsOffset;
     uint64_t seedsCounted = seedsOffset;
     uint64_t seedsFound = 0;
+    struct timeval stop, start;
+    gettimeofday(&start, 0);
     /* Optimizations start here */
     while (seedsCounted < seedsRequested) {
         seedsFound += (((((((seedsCounted + worldPositionSeed ^ 0x3ad8025f) ^ 0x5DEECE66D) & 0xffffffffffff) * 0x5DEECE66D + 0xB) & 0xffffffffffff) >> 17) % 10) == 0 ? 1 : 0;
         seedsCounted++;
     }
+    gettimeofday(&stop, NULL);
+    uint64_t microsTime = (stop.tv_sec - start.tv_sec) * 1000000 + stop.tv_usec - start.tv_usec;
     /* Optimizations end (but don't have to) here */
-    printf("Thread %lu finished: %lu seeds, %lu matches\n", index, seedsCounted, seedsFound);
+    printf("Thread %lu finished: %lu million seeds, %lu million matches and took %lu milliseconds\n", index, (seedsCounted - seedsOffset) / 1000000, seedsFound / 1000000, microsTime / 1000);
     pthread_exit(NULL);
 }
 
@@ -44,29 +49,34 @@ int main() {
     printf("Enter the amount of Threads to use: ");
     scanf("%lu", &threads);
     printf("\n");
+    if (threads < 2) {
+        printf("More threads...\n");
+        return (-1);
+    }
     uint64_t seedsPerThread = seedsRequested / threads;
 
     pthread_t tlist[threads];
     pthread_t ct;
-    struct seedfinder_struct args;
-    for (uint64_t threadIndex = 0; threadIndex < threads; threadIndex++) {
-        args.worldPositionSeed = worldPositionSeed;
-        args.seedsOffset = threadIndex * seedsPerThread;
-        args.seedsRequested = seedsPerThread;
-        args.index = threadIndex + 1;
-        pthread_create(&ct, NULL, runSeedfinder, (void *)&args);
+    for (uint64_t threadIndex = 1; threadIndex < threads; threadIndex++) {
+        struct seedfinder_struct* args = (struct seedfinder_struct *)malloc(sizeof(struct seedfinder_struct));
+        args->worldPositionSeed = worldPositionSeed;
+        args->seedsOffset = threadIndex * seedsPerThread;
+        args->seedsRequested = seedsPerThread;
+        args->index = threadIndex;
+        pthread_create(&ct, NULL, runSeedfinder, (void *)args);
         tlist[threadIndex] = ct;
     }
 
-    struct timeval stop, start;
-    gettimeofday(&start, 0);
+    if (threads > 1) {
+        struct seedfinder_struct* args = (struct seedfinder_struct *)malloc(sizeof(struct seedfinder_struct));
+        args->worldPositionSeed = worldPositionSeed;
+        args->seedsOffset = 0;
+        args->seedsRequested = seedsPerThread;
+        args->index = 0;
+        runSeedfinder((void*)args);
+    }
 
     for (uint64_t i = 0; i < threads; i++) {
         pthread_join(tlist[i], NULL);
     }
-
-    gettimeofday(&stop, NULL);
-    uint64_t microsTime = (stop.tv_sec - start.tv_sec) * 1000000 + stop.tv_usec - start.tv_usec;
-    printf("\nThe Program ran through %lu seeds.\n", seedsRequested);
-    printf("The program ran for %lu milliseconds.\n", microsTime / 1000);
 }
