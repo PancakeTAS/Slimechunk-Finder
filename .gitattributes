@@ -1,3 +1,4 @@
 * eol=lf
 *.img filter=lfs diff=lfs merge=lfs -text
 uefi/emptydisk.empty filter=lfs diff=lfs merge=lfs -text
+uefi/uefi/* linguist-documentation
