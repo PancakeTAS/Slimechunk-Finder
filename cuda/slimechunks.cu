@@ -52,17 +52,31 @@ int main() {
     find8seeds<<<(long) ((float) N / 1024),1024>>>(useless);
     #else
     uint8_t *cuda_results;
+    uint8_t *results = (uint8_t*) malloc(sizeof(uint8_t) * N);
     cudaMalloc((void**)&cuda_results, sizeof(uint8_t) * N);
     find8seeds<<<(long) ((float) N / 1024),1024>>>(cuda_results);
     #endif
     gettimeofday(&start, 0);
     cudaDeviceSynchronize();
     gettimeofday(&stop, 0);
-    uint64_t microsTime = (stop.tv_sec - start.tv_sec) * 1000000 + stop.tv_usec - start.tv_usec;
     printf("Program finished in %lu microseconds or %lu milliseconds\n", microsTime, (long)((float) microsTime / 1000));
-    printf("Program cleaned up successfully.\n");
+    uint64_t microsTime = (stop.tv_sec - start.tv_sec) * 1000000 + stop.tv_usec - start.tv_usec;
     #if !OPTIMIZE_SPEED
+    cudaMemcpy(results, cuda_results, sizeof(uint8_t) * N, cudaMemcpyDeviceToHost);
     cudaFree(cuda_results);
+    uint64_t founds;
+    for (uint64_t i = 0; i < N; i++) {
+        founds += (results[i] & 0x01) == 1 ? 1 : 0;
+        founds += (results[i] & 0x02) == 1 ? 1 : 0;
+        founds += (results[i] & 0x04) == 1 ? 1 : 0;
+        founds += (results[i] & 0x08) == 1 ? 1 : 0;
+        founds += (results[i] & 0x10) == 1 ? 1 : 0;
+        founds += (results[i] & 0x20) == 1 ? 1 : 0;
+        founds += (results[i] & 0x40) == 1 ? 1 : 0;
+        founds += (results[i] & 0x80) == 1 ? 1 : 0;
+    }
+    free(results * 8);
+    printf("%d Seeds found.\n", founds);
     #endif
     return 0;
 }
