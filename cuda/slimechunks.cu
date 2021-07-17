@@ -59,8 +59,8 @@ int main() {
     gettimeofday(&start, 0);
     cudaDeviceSynchronize();
     gettimeofday(&stop, 0);
-    printf("Program finished in %lu microseconds or %lu milliseconds\n", microsTime, (long)((float) microsTime / 1000));
     uint64_t microsTime = (stop.tv_sec - start.tv_sec) * 1000000 + stop.tv_usec - start.tv_usec;
+    printf("Program finished in %lu microseconds or %lu milliseconds\n", microsTime, (long)((float) microsTime / 1000));
     #if !OPTIMIZE_SPEED
     cudaMemcpy(results, cuda_results, sizeof(uint8_t) * N, cudaMemcpyDeviceToHost);
     cudaFree(cuda_results);
