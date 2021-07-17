@@ -75,7 +75,7 @@ int main() {
         founds += (results[i] & 0x40) == 1 ? 1 : 0;
         founds += (results[i] & 0x80) == 1 ? 1 : 0;
     }
-    free(results * 8);
+    free(results);
     printf("%d Seeds found.\n", founds);
     #endif
     return 0;
